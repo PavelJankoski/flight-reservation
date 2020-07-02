@@ -1,11 +1,13 @@
 package mk.ukim.finki.emtproject.flightreservation.flightmenagement.domain.model;
 
+import lombok.Getter;
 import mk.ukim.finki.emtproject.flightreservation.sharedkernel.domain.base.AbstractEntity;
 
 import javax.persistence.*;
 
 @Entity
-@Table(name = "flight_seat")
+@Table(name = "flight_seats")
+@Getter
 public class FlightSeat extends AbstractEntity<FlightSeatId> {
     @EmbeddedId
     private FlightSeatId id;
@@ -25,6 +27,9 @@ public class FlightSeat extends AbstractEntity<FlightSeatId> {
 
     @Column(name = "seat_column", nullable = false)
     private int column;
+
+    @ManyToOne
+    private Flight flight;
 
     @Override
     public FlightSeatId id() {

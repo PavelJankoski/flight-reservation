@@ -1,11 +1,13 @@
 package mk.ukim.finki.emtproject.flightreservation.customermenagement.domain.model;
 
+import lombok.Getter;
 import mk.ukim.finki.emtproject.flightreservation.sharedkernel.domain.base.AbstractEntity;
 
 import javax.persistence.*;
 
 @Entity
-@Table(name = "customer")
+@Table(name = "customers")
+@Getter
 public class Customer extends AbstractEntity<CustomerId> {
 
     @EmbeddedId

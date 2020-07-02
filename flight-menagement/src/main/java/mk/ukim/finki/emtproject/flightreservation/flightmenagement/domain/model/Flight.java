@@ -1,14 +1,17 @@
 package mk.ukim.finki.emtproject.flightreservation.flightmenagement.domain.model;
 
+import lombok.Getter;
 import mk.ukim.finki.emtproject.flightreservation.sharedkernel.domain.base.AbstractEntity;
 import mk.ukim.finki.emtproject.flightreservation.sharedkernel.domain.financial.Money;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
+import java.util.Set;
 
 
 @Entity
-@Table(name = "flight")
+@Table(name = "flights")
+@Getter
 public class Flight extends AbstractEntity<FlightId> {
 
     @EmbeddedId
@@ -37,6 +40,9 @@ public class Flight extends AbstractEntity<FlightId> {
             @AttributeOverride(name = "to", column = @Column(name = "arrival_in"))
     })
     private Route route;
+
+    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.EAGER)
+    private Set<FlightSeat> seats;
 
 
     @Override

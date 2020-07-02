@@ -1,4 +1,4 @@
-package mk.ukim.finki.emtproject.flightreservation.flightmenagement.domain.model;
+package mk.ukim.finki.emtproject.flightreservation.bookingmenagement.domain.model;
 
 import mk.ukim.finki.emtproject.flightreservation.sharedkernel.domain.base.DomainObjectId;
 
