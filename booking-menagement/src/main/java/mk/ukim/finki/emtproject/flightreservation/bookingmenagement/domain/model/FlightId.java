@@ -6,6 +6,7 @@ import javax.persistence.Embeddable;
 
 @Embeddable
 public class FlightId extends DomainObjectId {
+
     public FlightId(String id) {
         super(id);
     }

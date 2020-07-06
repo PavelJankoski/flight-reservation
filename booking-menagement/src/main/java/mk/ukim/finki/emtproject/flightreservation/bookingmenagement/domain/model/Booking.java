@@ -1,5 +1,6 @@
 package mk.ukim.finki.emtproject.flightreservation.bookingmenagement.domain.model;
 
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import mk.ukim.finki.emtproject.flightreservation.sharedkernel.domain.base.AbstractEntity;
@@ -8,7 +9,10 @@ import mk.ukim.finki.emtproject.flightreservation.sharedkernel.domain.financial.
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
+import java.time.Instant;
 import java.time.LocalDateTime;
+import java.util.HashSet;
+import java.util.Set;
 
 @Entity
 @Table(name = "bookings")
@@ -16,18 +20,23 @@ import java.time.LocalDateTime;
 @Getter
 public class Booking extends AbstractEntity<BookingId> {
 
-    @EmbeddedId
-    private BookingId id;
-
     @Version
     private Long version;
 
     @Column(nullable = false)
-    private LocalDateTime dateAndTime;
+    private Instant bookedOn;
 
     @Enumerated(EnumType.STRING)
     @Column(name = "booking_status", nullable = false)
     private BookingStatus status;
+
+    @Embedded
+    @AttributeOverride(name = "id", column = @Column(name = "customer_id", nullable = false))
+    private CustomerId customerId;
+
+    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.EAGER)
+    @JoinColumn(name = "booking_id")
+    private Set<BookingFlightSeat> bookedSeats;
 
     @Embedded
     @AttributeOverrides({
@@ -37,33 +46,21 @@ public class Booking extends AbstractEntity<BookingId> {
     private Money totalPrice;
 
 
-    //@Embedded
-    //@AttributeOverride(name="customerId",column = @Column(name="customer_id",nullable = false))
-    //private CustomerId customerId;
-
-    //@Embedded
-    //@AttributeOverride(name="flightId",column = @Column(name="flight_id",nullable = false))
-    //private FlightId flightId;
-
-
-    public Booking(@NotNull Money totalPrice
-            //, @NotNull CustomerId customerId, @NotNull FlightId flightId
-    ) {
+    public Booking(Money totalPrice,CustomerId customerId) {
         super(DomainObjectId.randomId(BookingId.class));
-        this.dateAndTime = LocalDateTime.now();
+        this.bookedOn = Instant.now();
+        this.bookedSeats=new HashSet<>();
         this.status = BookingStatus.RESERVED;
         this.totalPrice = totalPrice;
-        //this.customerId = customerId;
-        //this.flightId = flightId;
-
+        this.customerId=customerId;
     }
 
-    public void changeBookingStatus(BookingStatus bookingStatus){
+    public void setBookedSeats(Set<BookingFlightSeat> bookedSeats) {
+        this.bookedSeats = bookedSeats;
+    }
+
+    public void changeBookingStatus(BookingStatus bookingStatus) {
         this.status = bookingStatus;
     }
 
-    @Override
-    public BookingId id() {
-        return id;
-    }
 }

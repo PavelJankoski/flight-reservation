@@ -1,19 +1,18 @@
-package mk.ukim.finki.emtproject.flightreservation.bookingmenagement.domain.model;
+package mk.ukim.finki.emtproject.flightreservation.flightmenagement.domain.model;
 
 import mk.ukim.finki.emtproject.flightreservation.sharedkernel.domain.base.DomainObjectId;
 
 import javax.persistence.Embeddable;
 
 @Embeddable
-public class FlightSeatId extends DomainObjectId {
+public class BookingId extends DomainObjectId {
 
-    public FlightSeatId(String id) {
+    public BookingId(String id) {
         super(id);
     }
 
-
     @SuppressWarnings("unused")
-    protected FlightSeatId(){
+    protected BookingId(){
         super("");
     }
 }

@@ -41,8 +41,8 @@ public class Flight extends AbstractEntity<FlightId> {
     })
     private Route route;
 
-    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.EAGER)
-    private Set<FlightSeat> seats;
+//    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.EAGER)
+//    private Set<FlightSeat> seats;
 
 
     @Override

@@ -9,7 +9,7 @@ import javax.persistence.MappedSuperclass;
 @Getter
 @MappedSuperclass
 public abstract class AbstractEntity<ID extends DomainObjectId>
-implements IdentifyableDomainObject<ID>{
+implements IdentifiableDomainObject<ID> {
 
     @EmbeddedId
     private ID id;
@@ -20,6 +20,11 @@ implements IdentifyableDomainObject<ID>{
 
     public AbstractEntity(ID id) {
         this.id=id;
+    }
+
+    @Override
+    public ID id() {
+        return this.id;
     }
 
     @Override

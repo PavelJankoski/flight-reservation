@@ -12,7 +12,6 @@ import java.util.UUID;
 @Getter
 public class DomainObjectId implements ValueObject{
 
-
     private String id;
 
     public DomainObjectId(String id) {
