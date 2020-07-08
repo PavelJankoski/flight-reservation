@@ -23,6 +23,6 @@ public class BookedSeatsTranslator implements RemoteEventTranslator {
 
     @Override
     public Optional<DomainEvent> translate(StoredDomainEvent remoteEvent) {
-        return Optional.of(remoteEvent.toDomainEvent(objectMapper,BookedSeatsEvent.class));
+        return Optional.of(remoteEvent.toDomainEvent(objectMapper, BookedSeatsEvent.class));
     }
 }

@@ -22,18 +22,6 @@ public class RemoteEventProcessor {
     private final ApplicationEventPublisher applicationEventPublisher;
     private final TransactionTemplate transactionTemplate;
 
-//
-//    public RemoteEventProcessor(ProcessedRemoteEventRepository processedRemoteEventRepository,
-//                                Map<String, RemoteEventLogService> remoteEventLogs,
-//                                Map<String, RemoteEventTranslator> remoteEventTranslators,
-//                                ApplicationEventPublisher applicationEventPublisher,
-//                                TransactionTemplate transactionTemplate) {
-//        this.processedRemoteEventRepository = processedRemoteEventRepository;
-//        this.remoteEventLogs = remoteEventLogs;
-//        this.remoteEventTranslators = remoteEventTranslators;
-//        this.applicationEventPublisher = applicationEventPublisher;
-//        this.transactionTemplate = transactionTemplate;
-//    }
 
     @Scheduled(fixedDelay = 20000)
     public void processEvents() {

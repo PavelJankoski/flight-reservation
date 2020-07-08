@@ -3,6 +3,7 @@ package mk.ukim.finki.emtproject.flightreservation.flightmenagement.domain.model
 import lombok.Getter;
 import mk.ukim.finki.emtproject.flightreservation.sharedkernel.domain.base.AbstractEntity;
 import mk.ukim.finki.emtproject.flightreservation.sharedkernel.domain.financial.Money;
+import org.apache.tomcat.jni.Local;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
@@ -14,8 +15,8 @@ import java.util.Set;
 @Getter
 public class Flight extends AbstractEntity<FlightId> {
 
-    @EmbeddedId
-    private FlightId id;
+//    @EmbeddedId
+//    private FlightId id;
 
     @Version
     private Long version;
@@ -40,13 +41,26 @@ public class Flight extends AbstractEntity<FlightId> {
             @AttributeOverride(name = "to", column = @Column(name = "arrival_in"))
     })
     private Route route;
-
+//
 //    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.EAGER)
 //    private Set<FlightSeat> seats;
 
+//
+//    @Override
+//    public FlightId id() {
+//        return id;
+//    }
+        public Flight(FlightId flightId, LocalDateTime dateAndTime,Money price,Route route,FlightStatus status)
+        {
+                super(flightId);
+                this.dateAndTime=dateAndTime;
+                this.price=price;
+                this.route=route;
+                this.status=status;
 
-    @Override
-    public FlightId id() {
-        return id;
-    }
+        }
+
+
+
 }
+

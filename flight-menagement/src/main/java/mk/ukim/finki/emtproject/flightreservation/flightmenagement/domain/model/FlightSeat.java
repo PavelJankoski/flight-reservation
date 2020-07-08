@@ -10,9 +10,9 @@ import javax.persistence.*;
 @Table(name = "flight_seats")
 @Getter
 public class FlightSeat extends AbstractEntity<FlightSeatId> {
-
-    @EmbeddedId
-    private FlightSeatId id;
+//
+//    @EmbeddedId
+//    private FlightSeatId id;
 
     @Embedded
     @AttributeOverride(name = "id",column = @Column(name = "book_id",nullable = false))
@@ -35,12 +35,13 @@ public class FlightSeat extends AbstractEntity<FlightSeatId> {
     private int column;
 
     @ManyToOne
+    @JoinColumn(name = "flight_id")
     private Flight flight;
 
-    @Override
-    public FlightSeatId id() {
-        return id;
-    }
+//    @Override
+//    public FlightSeatId id() {
+//        return id;
+//    }
 
     public void  setFlightStatus(@NonNull FlightSeatStatus flightSeatStatus)
     {
@@ -52,6 +53,15 @@ public class FlightSeat extends AbstractEntity<FlightSeatId> {
         this.bookingId=bookingId;
     }
 
-
+    public FlightSeat(FlightSeatId flightSeatId,BookingId bookingId,FlightSeatStatus flightSeatStatus,int column,int row,SeatClass seatClass,Flight flight)
+    {
+            super(flightSeatId);
+            this.bookingId=bookingId;
+            this.flightSeatStatus=flightSeatStatus;
+            this.column=column;
+            this.row=row;
+            this.seatClass=seatClass;
+            this.flight=flight;
+    }
 
 }

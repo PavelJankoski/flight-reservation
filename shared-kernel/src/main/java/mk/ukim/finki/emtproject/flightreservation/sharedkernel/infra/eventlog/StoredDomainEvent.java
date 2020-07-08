@@ -22,7 +22,7 @@ public class StoredDomainEvent {
     private static final int DOMAIN_EVENT_JSON_MAX_LENGTH = 1024;
 
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE)
+    @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "id", nullable = false)
     @JsonProperty("id")
     private Long id;
