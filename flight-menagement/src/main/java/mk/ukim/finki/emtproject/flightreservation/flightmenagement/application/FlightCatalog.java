@@ -26,27 +26,32 @@ public class FlightCatalog {
     private final FlightSeatRepository flightSeatRepository;
 
 
-
     @TransactionalEventListener(phase = TransactionPhase.BEFORE_COMMIT)
     public void onBookingCreatedEvent(BookingCreatedEvent event) {
-        List<FlightSeat> seats= flightSeatRepository.findAllByBookingId(event.getBookingId());
-        for ( FlightSeat seat:seats
-             ) {
-                if(event.getStatus()== BookingStatus.CANCELLED)
+        List<FlightSeat> seats = flightSeatRepository.findAllByBookingId(event.getBookingId());
+        for (FlightSeat seat : seats) {
+            if (event.getStatus() == BookingStatus.CANCELLED)
                 seat.setFlightStatus(FlightSeatStatus.AVAILABLE);
+            seat.setBookingId(new BookingId("nema"));
+            flightSeatRepository.save(seat);
         }
+
 
     }
 
 
     @TransactionalEventListener(phase = TransactionPhase.BEFORE_COMMIT)
     public void onBookedSeatsEvent(BookedSeatsEvent event) {
-        FlightSeat flightSeat = flightSeatRepository.findById(event.getFlightSeatId()).orElseThrow(RuntimeException::new);
-        flightSeat.setFlightStatus(FlightSeatStatus.RESERVED);
-        flightSeat.setBookingId(flightSeat.getBookingId());
-        flightSeatRepository.save(flightSeat);
+        if (event.getBookingStatus() == BookingStatus.RESERVED) {
+            FlightSeat flightSeat = flightSeatRepository.findById(event.getFlightSeatId()).orElseThrow(RuntimeException::new);
+            if (flightSeat.getFlightSeatStatus() == FlightSeatStatus.RESERVED) {
+                throw new RuntimeException("vekje e zafateno sedisteto");
+            }
+            flightSeat.setFlightStatus(FlightSeatStatus.RESERVED);
+            flightSeat.setBookingId(event.getBookingId());
+            flightSeatRepository.save(flightSeat);
+        }
     }
-
 
 
     public Optional<Flight> findById(FlightId flightId) {
@@ -59,7 +64,6 @@ public class FlightCatalog {
     public List<Flight> findAll() {
         return flightRepository.findAll();
     }
-
 
 
 }

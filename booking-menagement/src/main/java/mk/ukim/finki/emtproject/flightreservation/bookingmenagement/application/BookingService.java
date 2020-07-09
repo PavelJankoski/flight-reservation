@@ -44,20 +44,20 @@ public class BookingService  {
 
     @Transactional
     public BookingId createBooking(@NonNull Booking booking, String flightId, Set<String> seats) {
-        Objects.requireNonNull(booking,"order must not be null");
+        Objects.requireNonNull(booking,"Booking must not be null");
         var constraintViolations = validator.validate(booking);
 
         if (constraintViolations.size() > 0) {
-            throw new ConstraintViolationException("The OrderForm is not valid", constraintViolations);
+            throw new ConstraintViolationException("The form is not valid", constraintViolations);
         }
-        //vidi dali trea use eden repo za sedistava da se save.
+
         var newBooking = bookingRepository.saveAndFlush(booking);
         Set<BookingFlightSeat> flightSeats = seats.stream().map(s -> new BookingFlightSeat(new FlightSeatId(s), new FlightId(flightId), newBooking.id()))
                 .collect(Collectors.toSet());
         List<BookingFlightSeat> bookingFlightSeats = bookingFlightSeatRepository.saveAll(flightSeats);
         applicationEventPublisher.publishEvent(new BookingCreated(newBooking.id(),newBooking.getCustomerId(),newBooking.getStatus(),newBooking.getBookedOn()));
         bookingFlightSeats.forEach(bookedSeat ->
-                applicationEventPublisher.publishEvent(new BookedSeats(bookedSeat.getBookingId(),Instant.now(),bookedSeat.getFlightId(),bookedSeat.getId())));
+                applicationEventPublisher.publishEvent(new BookedSeats(bookedSeat.getBookingId(),Instant.now(),bookedSeat.getFlightId(),bookedSeat.getId(),newBooking.getStatus())));
         return newBooking.id();
     }
 
@@ -68,5 +68,14 @@ public class BookingService  {
 
     public Optional<Booking> findById(BookingId bookingId) {
         return bookingRepository.findById(bookingId);
+    }
+
+    @Transactional
+    public Booking deleteBooking(BookingId bookingId) {
+        Booking booking=findById(bookingId).orElseThrow(() -> new RuntimeException("error"));
+            booking.changeBookingStatus(BookingStatus.valueOf("CANCELLED"));
+            bookingRepository.saveAndFlush(booking);
+            applicationEventPublisher.publishEvent(new BookingCreated(booking.id(),booking.getCustomerId(),booking.getStatus(),booking.getBookedOn()));
+        return  booking;
     }
 }

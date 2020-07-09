@@ -8,7 +8,8 @@ import javax.persistence.Embeddable;
 public class FlightSeatId extends DomainObjectId {
 
     public FlightSeatId(String id) {
-        super(DomainObjectId.randomId(FlightSeatId.class).toString());
+      //  super(DomainObjectId.randomId(FlightSeatId.class).toString());
+        super(id);
     }
 
     @SuppressWarnings("unused")

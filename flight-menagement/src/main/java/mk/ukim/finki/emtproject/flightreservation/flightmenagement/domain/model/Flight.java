@@ -1,6 +1,7 @@
 package mk.ukim.finki.emtproject.flightreservation.flightmenagement.domain.model;
 
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import mk.ukim.finki.emtproject.flightreservation.sharedkernel.domain.base.AbstractEntity;
 import mk.ukim.finki.emtproject.flightreservation.sharedkernel.domain.financial.Money;
 import org.apache.tomcat.jni.Local;
@@ -13,6 +14,7 @@ import java.util.Set;
 @Entity
 @Table(name = "flights")
 @Getter
+@NoArgsConstructor
 public class Flight extends AbstractEntity<FlightId> {
 
 //    @EmbeddedId
@@ -42,8 +44,8 @@ public class Flight extends AbstractEntity<FlightId> {
     })
     private Route route;
 //
-//    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.EAGER)
-//    private Set<FlightSeat> seats;
+    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.EAGER, mappedBy = "flight")
+    private Set<FlightSeat> seats;
 
 //
 //    @Override

@@ -46,11 +46,11 @@ public class Booking extends AbstractEntity<BookingId> {
     private Money totalPrice;
 
 
-    public Booking(Money totalPrice,CustomerId customerId) {
+    public Booking(Money totalPrice,CustomerId customerId,BookingStatus bookingStatus) {
         super(DomainObjectId.randomId(BookingId.class));
         this.bookedOn = Instant.now();
         this.bookedSeats=new HashSet<>();
-        this.status = BookingStatus.RESERVED;
+        this.status = bookingStatus;
         this.totalPrice = totalPrice;
         this.customerId=customerId;
     }

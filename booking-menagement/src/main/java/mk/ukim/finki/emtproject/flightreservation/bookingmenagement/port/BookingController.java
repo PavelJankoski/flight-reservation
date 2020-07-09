@@ -1,42 +1,34 @@
 package mk.ukim.finki.emtproject.flightreservation.bookingmenagement.port;
 
-
 import mk.ukim.finki.emtproject.flightreservation.bookingmenagement.application.BookingService;
-import mk.ukim.finki.emtproject.flightreservation.bookingmenagement.domain.model.Booking;
-import mk.ukim.finki.emtproject.flightreservation.bookingmenagement.domain.model.BookingId;
-import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import mk.ukim.finki.emtproject.flightreservation.bookingmenagement.domain.model.*;
+import mk.ukim.finki.emtproject.flightreservation.bookingmenagement.port.dto.BookingDTO;
+import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
+import java.util.Set;
 
 @RestController
-@RequestMapping("api/booking")
+@RequestMapping("/api/bookings")
 public class BookingController {
 
     private final BookingService bookingService;
+
 
     public BookingController(BookingService bookingService) {
         this.bookingService = bookingService;
     }
 
-    @GetMapping
-    public List<Booking> findAll()
-    {
-        return bookingService.findAll();
-
+    @PostMapping("/create")
+    public BookingId createBooking(@RequestBody BookingDTO bookingDTO) {
+        Booking booking = new Booking(bookingDTO.getMoney(), new CustomerId(bookingDTO.getCustomerId()),BookingStatus.valueOf(bookingDTO.getStatus()));
+        return bookingService.createBooking(booking, bookingDTO.getFlightId(), bookingDTO.getSeats());
     }
 
-    @GetMapping("/{id}")
-    public ResponseEntity<Booking> findById(@PathVariable("id") String bookingId)
+    @GetMapping("/delete")
+    public Booking deleteBooking(@RequestBody BookingId bookingId)
     {
-        return bookingService.findById(new BookingId(bookingId))
-                .map(ResponseEntity::ok)
-                .orElse(ResponseEntity.notFound().build());
+        return bookingService.deleteBooking(bookingId);
     }
-
 
 
 }

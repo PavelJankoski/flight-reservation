@@ -16,6 +16,8 @@ public class BookingDTO implements Serializable {
 
     private String flightId;
 
+    private String status;
+
     private Set<String>seats;
 
 }

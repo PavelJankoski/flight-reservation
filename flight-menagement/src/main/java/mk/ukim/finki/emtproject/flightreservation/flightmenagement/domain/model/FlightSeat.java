@@ -1,6 +1,7 @@
 package mk.ukim.finki.emtproject.flightreservation.flightmenagement.domain.model;
 
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import mk.ukim.finki.emtproject.flightreservation.sharedkernel.domain.base.AbstractEntity;
 import org.springframework.lang.NonNull;
 
@@ -9,6 +10,7 @@ import javax.persistence.*;
 @Entity
 @Table(name = "flight_seats")
 @Getter
+@NoArgsConstructor
 public class FlightSeat extends AbstractEntity<FlightSeatId> {
 //
 //    @EmbeddedId
@@ -22,6 +24,7 @@ public class FlightSeat extends AbstractEntity<FlightSeatId> {
     private Long version;
 
     @Column(nullable = false)
+    @Enumerated(EnumType.STRING)
     private FlightSeatStatus flightSeatStatus;
 
     @Enumerated(EnumType.STRING)

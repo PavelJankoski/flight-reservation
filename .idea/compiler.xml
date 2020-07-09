@@ -8,10 +8,10 @@
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
         <module name="flight-menagement" />
-        <module name="customer-menagement" />
+        <module name="booking-menagement" />
         <module name="shared-kernel" />
         <module name="flightReservation" />
-        <module name="booking-menagement" />
+        <module name="customer-menagement" />
       </profile>
     </annotationProcessing>
   </component>
