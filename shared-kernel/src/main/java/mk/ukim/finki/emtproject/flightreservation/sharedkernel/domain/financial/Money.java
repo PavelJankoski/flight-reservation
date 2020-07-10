@@ -7,12 +7,11 @@ import org.springframework.lang.NonNull;
 import javax.persistence.Embeddable;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
-import java.io.Serializable;
 import java.util.Objects;
 
 @Embeddable
 @Getter
-public class Money implements ValueObject, Serializable {
+public class Money implements ValueObject {
 
     @Enumerated(value = EnumType.STRING)
     private final Currency currency;

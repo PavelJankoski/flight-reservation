@@ -2,17 +2,17 @@ package mk.ukim.finki.emtproject.flightreservation.bookingmenagement.domain.mode
 
 
 import lombok.Getter;
-import lombok.NoArgsConstructor;
 import mk.ukim.finki.emtproject.flightreservation.sharedkernel.domain.base.AbstractEntity;
 
 import javax.persistence.*;
 
 @Entity
 @Table(name = "booking_seats")
-@NoArgsConstructor
 @Getter
 public class BookingFlightSeat extends AbstractEntity<FlightSeatId> {
 
+    @SuppressWarnings("unused")
+    protected BookingFlightSeat(){}
 
     @Embedded
     @AttributeOverride(name = "id",column = @Column(name = "booking_id",nullable = false))

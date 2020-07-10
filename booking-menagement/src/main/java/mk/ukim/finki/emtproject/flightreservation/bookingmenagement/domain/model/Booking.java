@@ -1,24 +1,22 @@
 package mk.ukim.finki.emtproject.flightreservation.bookingmenagement.domain.model;
 
-import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import lombok.Getter;
-import lombok.NoArgsConstructor;
 import mk.ukim.finki.emtproject.flightreservation.sharedkernel.domain.base.AbstractEntity;
 import mk.ukim.finki.emtproject.flightreservation.sharedkernel.domain.base.DomainObjectId;
 import mk.ukim.finki.emtproject.flightreservation.sharedkernel.domain.financial.Money;
 
 import javax.persistence.*;
-import javax.validation.constraints.NotNull;
 import java.time.Instant;
-import java.time.LocalDateTime;
 import java.util.HashSet;
 import java.util.Set;
 
 @Entity
 @Table(name = "bookings")
-@NoArgsConstructor
 @Getter
 public class Booking extends AbstractEntity<BookingId> {
+
+    @SuppressWarnings("unused")
+    protected Booking(){}
 
     @Version
     private Long version;
@@ -46,17 +44,13 @@ public class Booking extends AbstractEntity<BookingId> {
     private Money totalPrice;
 
 
-    public Booking(Money totalPrice,CustomerId customerId,BookingStatus bookingStatus) {
+    public Booking(Money totalPrice,CustomerId customerId) {
         super(DomainObjectId.randomId(BookingId.class));
         this.bookedOn = Instant.now();
         this.bookedSeats=new HashSet<>();
-        this.status = bookingStatus;
+        this.status = BookingStatus.RESERVED;
         this.totalPrice = totalPrice;
         this.customerId=customerId;
-    }
-
-    public void setBookedSeats(Set<BookingFlightSeat> bookedSeats) {
-        this.bookedSeats = bookedSeats;
     }
 
     public void changeBookingStatus(BookingStatus bookingStatus) {

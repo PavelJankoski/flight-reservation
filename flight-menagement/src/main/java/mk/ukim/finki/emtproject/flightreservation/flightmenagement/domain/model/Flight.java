@@ -1,10 +1,9 @@
 package mk.ukim.finki.emtproject.flightreservation.flightmenagement.domain.model;
 
 import lombok.Getter;
-import lombok.NoArgsConstructor;
 import mk.ukim.finki.emtproject.flightreservation.sharedkernel.domain.base.AbstractEntity;
+import mk.ukim.finki.emtproject.flightreservation.sharedkernel.domain.base.DomainObjectId;
 import mk.ukim.finki.emtproject.flightreservation.sharedkernel.domain.financial.Money;
-import org.apache.tomcat.jni.Local;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
@@ -14,11 +13,14 @@ import java.util.Set;
 @Entity
 @Table(name = "flights")
 @Getter
-@NoArgsConstructor
 public class Flight extends AbstractEntity<FlightId> {
 
 //    @EmbeddedId
 //    private FlightId id;
+
+    @SuppressWarnings("unused")
+    protected Flight(){}
+
 
     @Version
     private Long version;
@@ -52,9 +54,9 @@ public class Flight extends AbstractEntity<FlightId> {
 //    public FlightId id() {
 //        return id;
 //    }
-        public Flight(FlightId flightId, LocalDateTime dateAndTime,Money price,Route route,FlightStatus status)
+        public Flight(LocalDateTime dateAndTime,Money price,Route route,FlightStatus status)
         {
-                super(flightId);
+                super(DomainObjectId.randomId(FlightId.class));
                 this.dateAndTime=dateAndTime;
                 this.price=price;
                 this.route=route;

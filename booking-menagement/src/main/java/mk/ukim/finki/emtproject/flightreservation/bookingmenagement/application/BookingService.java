@@ -12,7 +12,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 import javax.validation.ConstraintViolationException;
 import javax.validation.Validator;
-
 import java.time.Instant;
 import java.util.List;
 import java.util.Objects;
@@ -55,7 +54,7 @@ public class BookingService  {
         Set<BookingFlightSeat> flightSeats = seats.stream().map(s -> new BookingFlightSeat(new FlightSeatId(s), new FlightId(flightId), newBooking.id()))
                 .collect(Collectors.toSet());
         List<BookingFlightSeat> bookingFlightSeats = bookingFlightSeatRepository.saveAll(flightSeats);
-        applicationEventPublisher.publishEvent(new BookingCreated(newBooking.id(),newBooking.getCustomerId(),newBooking.getStatus(),newBooking.getBookedOn()));
+        applicationEventPublisher.publishEvent(new BookingCreated(newBooking.getId(),newBooking.getCustomerId(),newBooking.getStatus(),newBooking.getBookedOn()));
         bookingFlightSeats.forEach(bookedSeat ->
                 applicationEventPublisher.publishEvent(new BookedSeats(bookedSeat.getBookingId(),Instant.now(),bookedSeat.getFlightId(),bookedSeat.getId(),newBooking.getStatus())));
         return newBooking.id();
@@ -71,7 +70,7 @@ public class BookingService  {
     }
 
     @Transactional
-    public Booking deleteBooking(BookingId bookingId) {
+    public Booking cancelBooking(BookingId bookingId) {
         Booking booking=findById(bookingId).orElseThrow(() -> new RuntimeException("error"));
             booking.changeBookingStatus(BookingStatus.valueOf("CANCELLED"));
             bookingRepository.saveAndFlush(booking);

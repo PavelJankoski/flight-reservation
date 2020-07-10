@@ -1,8 +1,8 @@
 package mk.ukim.finki.emtproject.flightreservation.flightmenagement.domain.model;
 
 import lombok.Getter;
-import lombok.NoArgsConstructor;
 import mk.ukim.finki.emtproject.flightreservation.sharedkernel.domain.base.AbstractEntity;
+import mk.ukim.finki.emtproject.flightreservation.sharedkernel.domain.base.DomainObjectId;
 import org.springframework.lang.NonNull;
 
 import javax.persistence.*;
@@ -10,11 +10,13 @@ import javax.persistence.*;
 @Entity
 @Table(name = "flight_seats")
 @Getter
-@NoArgsConstructor
 public class FlightSeat extends AbstractEntity<FlightSeatId> {
 //
 //    @EmbeddedId
 //    private FlightSeatId id;
+    @SuppressWarnings("unused")
+    protected FlightSeat(){}
+
 
     @Embedded
     @AttributeOverride(name = "id",column = @Column(name = "book_id",nullable = false))
@@ -46,7 +48,7 @@ public class FlightSeat extends AbstractEntity<FlightSeatId> {
 //        return id;
 //    }
 
-    public void  setFlightStatus(@NonNull FlightSeatStatus flightSeatStatus)
+    public void  changeSeatStatus(@NonNull FlightSeatStatus flightSeatStatus)
     {
             this.flightSeatStatus=flightSeatStatus;
     }
@@ -56,9 +58,9 @@ public class FlightSeat extends AbstractEntity<FlightSeatId> {
         this.bookingId=bookingId;
     }
 
-    public FlightSeat(FlightSeatId flightSeatId,BookingId bookingId,FlightSeatStatus flightSeatStatus,int column,int row,SeatClass seatClass,Flight flight)
+    public FlightSeat(BookingId bookingId,FlightSeatStatus flightSeatStatus,int column,int row,SeatClass seatClass,Flight flight)
     {
-            super(flightSeatId);
+            super(DomainObjectId.randomId(FlightSeatId.class));
             this.bookingId=bookingId;
             this.flightSeatStatus=flightSeatStatus;
             this.column=column;

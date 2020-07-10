@@ -15,7 +15,6 @@ import org.springframework.transaction.event.TransactionalEventListener;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
-import java.util.stream.DoubleStream;
 
 @Service
 @Transactional
@@ -28,14 +27,14 @@ public class FlightCatalog {
 
     @TransactionalEventListener(phase = TransactionPhase.BEFORE_COMMIT)
     public void onBookingCreatedEvent(BookingCreatedEvent event) {
-        List<FlightSeat> seats = flightSeatRepository.findAllByBookingId(event.getBookingId());
-        for (FlightSeat seat : seats) {
-            if (event.getStatus() == BookingStatus.CANCELLED)
-                seat.setFlightStatus(FlightSeatStatus.AVAILABLE);
-            seat.setBookingId(new BookingId("nema"));
-            flightSeatRepository.save(seat);
+        if (event.getStatus() == BookingStatus.CANCELLED) {
+            List<FlightSeat> seats = flightSeatRepository.findAllByBookingId(event.getBookingId());
+            for (FlightSeat seat : seats) {
+                seat.changeSeatStatus(FlightSeatStatus.AVAILABLE);
+                seat.setBookingId(new BookingId("empty"));
+                flightSeatRepository.save(seat);
+            }
         }
-
 
     }
 
@@ -45,9 +44,9 @@ public class FlightCatalog {
         if (event.getBookingStatus() == BookingStatus.RESERVED) {
             FlightSeat flightSeat = flightSeatRepository.findById(event.getFlightSeatId()).orElseThrow(RuntimeException::new);
             if (flightSeat.getFlightSeatStatus() == FlightSeatStatus.RESERVED) {
-                throw new RuntimeException("vekje e zafateno sedisteto");
+                throw new RuntimeException("The seat is already taken");
             }
-            flightSeat.setFlightStatus(FlightSeatStatus.RESERVED);
+            flightSeat.changeSeatStatus(FlightSeatStatus.RESERVED);
             flightSeat.setBookingId(event.getBookingId());
             flightSeatRepository.save(flightSeat);
         }

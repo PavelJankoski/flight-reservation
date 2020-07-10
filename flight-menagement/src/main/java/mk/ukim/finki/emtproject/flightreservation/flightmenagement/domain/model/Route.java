@@ -1,5 +1,6 @@
 package mk.ukim.finki.emtproject.flightreservation.flightmenagement.domain.model;
 
+import mk.ukim.finki.emtproject.flightreservation.sharedkernel.domain.base.ValueObject;
 import org.springframework.lang.NonNull;
 
 import javax.persistence.Column;
@@ -7,7 +8,7 @@ import javax.persistence.Embeddable;
 import java.util.Objects;
 
 @Embeddable
-public class Route {
+public class Route implements ValueObject {
     @Column(name = "from")
     private final String from;
     @Column(name = "to")
